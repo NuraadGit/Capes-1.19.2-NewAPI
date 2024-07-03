@@ -8,8 +8,6 @@ plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
     id "org.jetbrains.kotlin.jvm"
     id "org.ajoberstar.grgit"
-    id "com.matthewprenger.cursegradle"
-    id "com.modrinth.minotaur"
 }
 
 architectury {
@@ -141,9 +139,4 @@ tasks.register('github') {
     }
 }
 
-tasks.named("curseforge").get().dependsOn tasks.named("remapJar").get()
-tasks.named("modrinth").get().dependsOn tasks.named("remapJar").get()
-
-rootProject.tasks.named("modPublish").get().dependsOn tasks.named("curseforge").get()
-rootProject.tasks.named("modPublish").get().dependsOn tasks.named("modrinth").get()
 rootProject.tasks.named("modPublish").get().dependsOn tasks.named("github").get()
