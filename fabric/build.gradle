@@ -102,47 +102,6 @@ static def getChangeLog() {
     return "A changelog can be found at https://github.com/CaelTheColher/Capes"
 }
 
-curseforge {
-    String token = System.getenv("CURSEFORGE_API_KEY")
-    apiKey = token == null || token.isEmpty() ? "unset" : token
-    project {
-        id = curseforge_id
-        changelog = getChangeLog()
-        releaseType = "release"
-        addGameVersion("Fabric")
-        addGameVersion(minecraft_version)
-        relations {
-            requiredDependency("fabric-api")
-            requiredDependency("fabric-language-kotlin")
-            optionalDependency("modmenu")
-        }
-        mainArtifact(tasks.remapJar.archiveFile.get().getAsFile()) {
-            displayName = DISPLAY_NAME
-        }
-        afterEvaluate {
-            uploadTask.dependsOn(remapJar)
-        }
-    }
-    curseGradleOptions.forgeGradleIntegration = false
-}
-
-modrinth {
-    token = System.getenv("MODRINTH_TOKEN")
-    projectId = modrinth_id
-    versionNumber = mod_version
-    versionName = DISPLAY_NAME
-    uploadFile = remapJar
-    gameVersions = [minecraft_version]
-    loaders = ['fabric']
-    versionType = "release"
-    changelog = getChangeLog()
-    dependencies {
-        required.project("fabric-api")
-        required.project("fabric-language-kotlin")
-        optional.project("modmenu")
-    }
-}
-
 def getBranch() {
     def env = System.getenv()
     if (env.GITHUB_REF) {
